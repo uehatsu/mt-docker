@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  apache:
+    build: ./docker_files/apache/
+    ports:
+      - 80:80
+    volumes:
+      - ./docker_files/apache/htdocs/:/usr/local/apache2/htdocs/
+      - ./docker_files/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./movabletype/:/usr/local/apache2/cgi-bin/mt/
+      - ./movabletype/mt-static/:/usr/local/apache2/htdocs/mt-static/
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pass
+      MYSQL_DATABASE: mt
+      TZ: "Asia/Tokyo"
+    ports:
+      - 13306:3306
+    volumes:
+      - ./docker_files/mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+      - ./docker_files/mysql/mysql_data:/var/lib/mysql
+    tty: true
+    stdin_open: true
+    restart: always
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+  memcached:
+    image: memcached:1.5.19-alpine
+    ports:
+      - 11211:11211
