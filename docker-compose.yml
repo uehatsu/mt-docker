@@ -10,6 +10,7 @@ services:
       - ./docker_files/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - ./movabletype/:/usr/local/apache2/cgi-bin/mt/
       - ./movabletype/mt-static/:/usr/local/apache2/htdocs/mt-static/
+      - ./plugins/:/usr/local/src/plugins/
   mysql:
     image: mysql:5.7
     environment:
